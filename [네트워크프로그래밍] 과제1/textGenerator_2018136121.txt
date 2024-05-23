@@ -1,0 +1,30 @@
+#include <stdio_ext.h> 
+#include <string.h>
+int main() { 
+	char c;
+	char filename[55];
+	printf("Enter the filename to save(max 50 characters): "); 
+	fgets(filename, 50, stdin);	
+	filename[strlen(filename)-1] = '\0';  // '\n' remove	
+	strcat(filename, ".txt");
+	FILE* fp = fopen(filename, "w"); 
+	if (fp == NULL) { 
+		printf("Failed to open file."); 
+		return 1; 
+	} 
+	char text[1000] = "";
+	char buf[100]; 
+	printf("Enter (ctrl+d) to save (max 1000 characters)\n:");
+	while(fgets(buf, sizeof(buf), stdin)){
+		if(buf[strlen(buf)-1] == '\n'){
+			buf[strlen(buf) -1] = '\0';
+			strcat(text, buf);
+			strcat(text, "\n");
+		}
+	}
+	printf("\nFilename: %s\nInnerText\n: %s\n\n", filename, text);
+	fputs(text, fp); 
+	fclose(fp); 
+	printf("Text saved to file successfully.\n\n"); 
+	return 0;
+}
